@@ -1,0 +1,51 @@
+CREATE DATABASE universe;
+\c universe
+
+CREATE TABKE galaxy_cluster(
+cluster_id SERIAL PRIMARY KEY,
+name VARCHAR(20),
+galactic_age_in_billions_of_years INT,
+galactic_diameter_in_billions_of_light_years INT,
+
+)
+
+
+
+CREATE TABLE galaxy (
+galaxy_id SERIAL PRIMARY KEY,
+name VARCHAR(20),
+galactic_mass INT,
+galaxy_age_in_billion_years INT,
+galaxy_redshift NUMERIC,
+cluster TEXT,
+spiral BOOLEAN,
+FOREIGN KEY(cluster_id) REFERENCES galaxy_cluster(cluster_id)
+)
+
+CREATE TABLE star (
+star_id SERIAL PRIMARY KEY,
+name VARCHAR(20),
+stellar_mass INT,
+age_in_billions_of_years INT,
+surface_temperature NUMERIC,
+FOREIGN KEY(galaxy_id) REFERENCES galaxy(galaxy_id)
+)
+
+CREATE TABLE planet(
+planet_id SERIAL PRIMARY KEY,
+name VARCHAR(20),
+planet_mass INT,
+age_in_billions_of_years INT,
+surface_temperature NUMERIC,
+FOREIGN KEY(star_id) REFERENCES star(star_id)
+)
+
+
+CREATE TABLE moon(
+moon_id SERIAL PRIMARY KEY,
+name VARCHAR(20),
+radius INT,
+age_in_billions_of_years INT,
+distance_from_its_planet NUMERIC,
+FOREIGN KEY(planet_id) REFERENCES planet(planet_id)
+)
