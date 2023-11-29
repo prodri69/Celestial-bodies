@@ -3,39 +3,53 @@ CREATE DATABASE universe;
 
 CREATE TABKE galaxy_cluster(
 cluster_id SERIAL PRIMARY KEY,
-name VARCHAR(20),
-galactic_age_in_billions_of_years INT,
-galactic_diameter_in_billions_of_light_years INT,
-
+name VARCHAR(20) UNIQUE,
+galactic_age_in_billions_of_years INT NOT NULL,
+galactic_diameter_in_billions_of_light_years INT NOT NULL,
 )
-
+INSERT INTO galaxy_cluster
+VALUES
+   ('Local Group', 13, 
+('Virgo Cluster'
+('Arp 85'
+('Centaurus Cluster'
 
 
 CREATE TABLE galaxy (
 galaxy_id SERIAL PRIMARY KEY,
-name VARCHAR(20),
-galactic_mass INT,
-galaxy_age_in_billion_years INT,
+name VARCHAR(20) UNIQUE,
+galactic_mass_in_trillion_solar_masses NUMERIC NOT NULL,
+galaxy_age_in_billion_years INT NOT NULL,
 galaxy_redshift NUMERIC,
 cluster TEXT,
 spiral BOOLEAN,
 FOREIGN KEY(cluster_id) REFERENCES galaxy_cluster(cluster_id)
 )
 
+INSERT INTO galaxy 
+VALUES 
+    ('Milky Way', 1.5, 13, 0, 'Local Group', TRUE),
+    ('Andromeda', 1.5, 10, 0.001, 'Local Group', TRUE), 
+    ('Triangulum', 0.05, 3, 0.0005, 'Local Group', TRUE),
+    ('Whirlpool Galaxy', 0.06, 1,  0.002, 'Arp 85', TRUE),
+    ('Sombrero Galaxy', 0.08, 9, 0.004, 'Virgo Cluster', TRUE),
+    ('Centaurus A', 1, 12, 0.0018, 'Centaurus Cluster', FALSE);
+
+
 CREATE TABLE star (
 star_id SERIAL PRIMARY KEY,
-name VARCHAR(20),
-stellar_mass INT,
-age_in_billions_of_years INT,
+name VARCHAR(20) UNIQUE,
+stellar_mass INT NOT NULL,
+age_in_billions_of_years INT NOT NULL,
 surface_temperature NUMERIC,
 FOREIGN KEY(galaxy_id) REFERENCES galaxy(galaxy_id)
 )
 
 CREATE TABLE planet(
 planet_id SERIAL PRIMARY KEY,
-name VARCHAR(20),
-planet_mass INT,
-age_in_billions_of_years INT,
+name VARCHAR(20) UNIQUE,
+planet_mass INT NOT NULL,
+age_in_billions_of_years INT NOT NULL,
 surface_temperature NUMERIC,
 FOREIGN KEY(star_id) REFERENCES star(star_id)
 )
@@ -43,9 +57,9 @@ FOREIGN KEY(star_id) REFERENCES star(star_id)
 
 CREATE TABLE moon(
 moon_id SERIAL PRIMARY KEY,
-name VARCHAR(20),
-radius INT,
-age_in_billions_of_years INT,
+name VARCHAR(20) UNIQUE,
+radius INT NOT NULL,
+age_in_billions_of_years INT NOT NULL,
 distance_from_its_planet NUMERIC,
 FOREIGN KEY(planet_id) REFERENCES planet(planet_id)
 )
